@@ -2,7 +2,6 @@ package com.review.springreview.signup.controller;
 
 import com.review.springreview.signup.dto.CommonResponseDto;
 import com.review.springreview.signup.dto.UserRequestDto;
-import com.review.springreview.signup.dto.UserResponseDto;
 import com.review.springreview.signup.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;

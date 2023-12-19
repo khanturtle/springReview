@@ -65,7 +65,6 @@ public class JwtUtil {
 
             Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
             cookie.setPath("/");
-
             // Response 객체에 Cookie 추가
             res.addCookie(cookie);
         } catch (UnsupportedEncodingException e) {
@@ -99,7 +98,7 @@ public class JwtUtil {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
-                    try {//FU//
+                    try {
                         return URLDecoder.decode(cookie.getValue().replaceAll("Bearer%20", ""), "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
                     } catch (UnsupportedEncodingException e) {
                         return null;

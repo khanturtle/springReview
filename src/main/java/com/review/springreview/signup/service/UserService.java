@@ -1,7 +1,6 @@
 package com.review.springreview.signup.service;
 
 import com.review.springreview.signup.dto.UserRequestDto;
-import com.review.springreview.signup.dto.UserResponseDto;
 import com.review.springreview.signup.entity.User;
 import com.review.springreview.signup.jwt.JwtUtil;
 import com.review.springreview.signup.repository.UserRepository;
@@ -40,8 +39,8 @@ public class UserService {
             jwtUtil.addJwtToCookie(token, res);
             return "로그인 성공";
         } else {
-            String token = jwtUtil.createToken(userRequestDto.getNickname(), user.getRole());
-            jwtUtil.addJwtToCookie(token, res);
+//            String token = jwtUtil.createToken(userRequestDto.getNickname(), user.getRole());
+//            jwtUtil.addJwtToCookie(token, res);
             return "닉네임 또는 패스워드를 확인해주세요.";
         }
     }
