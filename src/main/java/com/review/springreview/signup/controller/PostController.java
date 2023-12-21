@@ -32,10 +32,29 @@ public class PostController {
         } catch (RejectedExecutionException | IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
-
     }
     @GetMapping("")
     public List<PostResponseDto> getPosts(){
         return postService.getPosts();
+    }
+
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(
+            @PathVariable Long postId){
+        return postService.getPost(postId);
+    }
+
+    @PutMapping("/{postId}")
+    public PostResponseDto updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostRequestDto postRequestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.updatePost(postId,postRequestDto,userDetails);
+    }
+    @DeleteMapping("/{postId}")
+    public CommonResponseDto deletePost(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.deletePost(postId,userDetails);
     }
 }
