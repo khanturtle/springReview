@@ -6,6 +6,7 @@ import com.review.springreview.signup.jwt.JwtUtil;
 import com.review.springreview.signup.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     public String signup(UserRequestDto userRequestDto) {
         User user;
@@ -23,7 +25,7 @@ public class UserService {
         } else if (userRepository.findByNickname(userRequestDto.getNickname()).isPresent()) {
             return "중복된 닉네임 입니다.";
         } else {
-            user = new User(userRequestDto.getNickname(), userRequestDto.getPassword());
+            user = new User(userRequestDto.getNickname(), passwordEncoder.encode(userRequestDto.getPassword()));
         }
         userRepository.save(user);
         return "회원가입 성공";
