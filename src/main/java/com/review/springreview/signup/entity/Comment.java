@@ -1,10 +1,9 @@
 package com.review.springreview.signup.entity;
 
-import com.review.springreview.signup.dto.PostRequestDto;
-import com.review.springreview.signup.security.UserDetailsImpl;
+import com.review.springreview.signup.dto.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,18 +13,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class Post {
+@RequiredArgsConstructor
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
-    private String title;
-
-    @Column
-    private String content;
-
+    private String commentContent;
     @Column(name = "createdAt", updatable = false)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,19 +29,24 @@ public class Post {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;
-
-//    @Column(name = "like")
-//    private long like = 0;
-
     @ManyToOne
-    @JoinColumn(name = "nickname")
+    @JoinColumn(name = "userId")
     private User user;
 
-    public Post(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
-        this.title = postRequestDto.getTitle();
-        this.content = postRequestDto.getContent();
+    @ManyToOne
+    @JoinColumn(name = "postId")
+    private Post post;
+
+    public Comment(CommentRequestDto commentRequestDto, User user, Post post) {
+        this.commentContent = commentRequestDto.getCommentContent();
+        this.user = user;
+        this.post = post;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
-        this.user = userDetails.getUser();
+    }
+
+    public Comment(CommentRequestDto commentRequestDto) {
+        this.commentContent = commentRequestDto.getCommentContent();
+        this.modifiedAt = LocalDateTime.now();
     }
 }

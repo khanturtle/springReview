@@ -1,9 +1,12 @@
 package com.review.springreview.signup.service;
 
+import com.review.springreview.signup.dto.CommentResponseDto;
 import com.review.springreview.signup.dto.CommonResponseDto;
 import com.review.springreview.signup.dto.PostRequestDto;
 import com.review.springreview.signup.dto.PostResponseDto;
+import com.review.springreview.signup.entity.Comment;
 import com.review.springreview.signup.entity.Post;
+import com.review.springreview.signup.repository.CommentRepository;
 import com.review.springreview.signup.repository.PostRepository;
 import com.review.springreview.signup.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     //게시글 생성
     public PostResponseDto createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
         Post post = new Post(postRequestDto,userDetails);
@@ -49,7 +53,11 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 게시글 입니다.")
         );
-        return new PostResponseDto(post);
+        List<CommentResponseDto> commentList = new ArrayList<>();
+        for(Comment comment:commentRepository.findAllByPostId(postId)){
+            commentList.add(new CommentResponseDto(comment));
+        }
+        return new PostResponseDto(post,commentList);
     }
     //게시물 수정
     @Transactional
